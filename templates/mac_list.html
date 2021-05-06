@@ -1,0 +1,123 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index page</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script> -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <header class="header">
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light ">
+            <!-- <a class="navbar-brand" href="#">Navbar</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> -->
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                <a class="nav-item navbar-brand active" href="#">Stock OCR <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link" href="{% url 'home' %}">upload Image</a>
+                <a class="nav-item nav-link active"  href="list">Create OCR</a>
+                <a class="nav-item nav-link" href="{% url 'mac-list' %}">List</a>
+                </div>
+            </div>
+        </nav>
+        <h1 class="page-title">Entries List</h1>
+        <!-- <h5 class="item-type">Items Type</h5>
+        <form action="" method="POST" name='macform'>
+        {% csrf_token %}
+        <div class="form-group">
+            <input type="text" name="item_type" id="" style="padding: 5px; font-size: 15px;" class="form-control col-3">
+        </div> -->
+      </div>
+    </header>
+        <!-- <input type="text" name="item_type" id="" style="padding: 30px; font-size: 30px;">
+       
+        <div>
+            <img src="{{ item.mac_img.url}}" style="height: 500px;" alt="">
+            
+            <h1>
+                <input type="text" name="{{ item.name }}" id="" value="{{ item.name }}" style="padding: 30px; font-size: 30px;">
+            </h1>
+        </div> -->
+    <section class="container">
+        <div class=" my-5">
+            <form action=""  method="GET">
+                <div class="form-row">
+                    <div class="form-group col-md-4 col-lg-4">
+                        <label for="minDate">From</label>
+                        <input type="date" class="form-control" name="min_date" id="minDate" placeholder="min_date" required>
+                    </div>
+                    <!-- <div class="form-group col-md-4 col-lg-4">
+                        <label for="project">Project</label>
+                        <input type="text" class="form-control" name="project" id="project" placeholder="project">
+                    </div>  -->
+                    <div class="form-group col-md-4 col-lg-4">
+                        <label for="project">Project</label>
+                        <select class="form-control" id="project" name="project" required>
+                        <option></option>
+                        {% for project_obj in project_objs %}
+                          <option value="{{ project_obj.project_name }}">{{ project_obj.project_name }}</option>
+                        {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="submit-btn mt-5" >
+                    <button type="submit" class=" btn btn-lg btn-primary ">Search</button>
+                </div> 
+            </form>
+        </div>
+        <div class="form-row  m-5">
+            <div class="form-group col-md-3 col-lg-3">
+               <h3></h3>
+            </div> 
+        </div>
+        <div class="row">
+            {% for item in items %}
+            <div class="card entry-card col-md-6">
+                <div class="card-header">ID: {{item.pk}} | {{item.created_at}}  <span style="float: right;">{{ item.project.project_name }}</span></div>
+                <div class="card-body">
+                    <!-- <div class="row"> -->
+                        <div class="ocr-image-container">
+                        <img src="{{ item.img_path.url}}" alt="OCR Image" class="ocr-image" />
+                        </div>
+                        <div class="">
+                        <h5 style="margin-top: 10px;">{{ item.mac }}</h5>
+                        </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+            {% endfor %}
+        </div>    
+        <!-- <div class="submit-btn" >
+            <input type="submit" value="submit" name="submit" class="btn btn-lg btn-primary">
+        </div>
+        </form> -->
+    </section>
+    <div class="footer">
+        <!-- <h2>2021</h2> -->
+    </div>
+  </body>
+</html>
+`
