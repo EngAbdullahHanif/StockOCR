@@ -1,0 +1,4 @@
+Django
+tesseract
+pytesseract
+xlsxwriter
