@@ -1,8 +1,19 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Item, macItem, Project
+from .models import Item, Device, Project, ItemType
 
-admin.site.register(Item)
-admin.site.register(macItem)
-admin.site.register(Project)
+class MacAddressAdmin(admin.ModelAdmin):
+
+    search_fields = ('pk', 'mac', )
+
+
+class ProjectAdmin(admin.ModelAdmin):
+
+    search_fields = ('project_name', )
+
+
+# admin.site.register(Item)
+admin.site.register(Device, MacAddressAdmin)
+admin.site.register(Project, ProjectAdmin)
+admin.site.register(ItemType)

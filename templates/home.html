@@ -1,133 +1,53 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-</head>
-<body>
-    <div class="mt-5 pt-4">
-        {% if messages %} 
-          {% for message in messages %}
-            <div
-              style="border-radius: 0"
-              {% if message.tags %} 
-              class="alert alert-icon alert-{{ message.tags }} alert-dismissible fade show mb-0"
-              role="alert"
-              {% endif %}
-            >
-              <button
-                type="button"
-                class="close"
-                data-dismiss="alert"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <span style="padding-right: 23px; font-size: 19px">
-                {{ message }}</span
-              >
-            </div>
-          {% endfor %}
-        {% endif %}
-      </div>
+{% extends 'base.html' %}
+{% block title %}
+  Home Page 
+{% endblock title %}
+
+{% block page_title %}
+  Add Project
+{% endblock page_title %}
 
 
-    <h1>Welcome to Stock's Items Register</h1>
-
-    <form method="post" action="" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ form.mac_img }}
-        <button type="submit">send</button>
-    </form>
-    <h1><a href="{% url 'items-list' %}">Items List</a></h1>
-</body>
-</html> -->
-
-
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index page</title>
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
-    <!-- <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-      crossorigin="anonymous"
-    ></script> -->
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <script src="app.js" defer></script>
-  </head>
-  <body>
-    <header class="header">
-    <div class="container">
-        <nav class="navbar navbar-expand-lg navbar-light ">
-            <!-- <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button> -->
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                <a class="nav-item navbar-brand active" href="#">Stock OCR <span class="sr-only">(current)</span></a>
-                <a class="nav-item nav-link" href="{% url 'home' %}">upload Image</a>
-                <a class="nav-item nav-link" href="{% url 'list' %}">Make OCR</a>
-                <a class="nav-item nav-link" href="{% url 'mac-list' %}">List</a>
+{% block content %}
+  <div class="row">
+      <div class="  col-md-12">
+          <div class="card-body">
+            <form method="post" action="" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row" style="margin-top:50px;">
+                <div class="form-group col-md-4 col-lg-4">
+                  <label for="project_name">Project Title</label>
+                  <input type="text" class="form-control" name="project_name" placeholder="Project Title" id="project_name" required>
                 </div>
-            </div>
-        </nav>
-        <h1 class="page-title">Upload Image </h1>
-      </div>
-    </header>
-    <section class="container">
-        <div class="row">
-            <div class="card entry-card col-md-12">
-                <div class="card-body">
-                  <form method="post" action="" enctype="multipart/form-data">
-                    {% csrf_token %}
-                    <div class="row" style="margin-top:50px;">
-                      <!-- {{ form.mac_img }} -->
-                      <div class="form-group col-md-6 col-lg-6">
-                        <label for="mac_img">Upload Images</label>
-                        <br>
-                        <input type="file" name="mac_img" id="mac_img" accept="/" required multiple  >
-                      </div>
-                      <div class="form-group col-md-4 col-lg-4">
-                        <label for="project">Project</label>
-                        <select class="form-control" id="project" name="project_name" required>
-                        <option></option>
-                        {% for project_obj in project_objs %}
-                          <option value="{{ project_obj.project_name }}">{{ project_obj.project_name }}</option>
-                        {% endfor %}
-                        </select>
-                    </div>
-                    </div>
-                    
-                    <div class="submit-btn mt-5" >
-                      <input type="submit" value="submit" name="submit" class="btn btn-lg btn-primary">
-                    </div>      
-                  </form>
+                <div class="form-group col-md-4 col-lg-4">
+                  <label for="type">Device Type</label>
+                  <select class="form-control" id="type" name="item_type" required>
+                  <option></option>
+                  {% for project_obj in project_objs %}
+                    <option value="{{ project_obj.item_type }}">{{ project_obj.item_type }}</option>
+                  {% endfor %}
+                  </select>
                 </div>
-            </div>
-        </div>    
-                 
-    </section>
-    <div class="footer">
-    </div>
-  </body>
-</html>
-`
+              </div>
+              <div class="row">
+                <div class="form-group col-md-12 col-lg-12">
+                  <label for="project_description">Project Description</label>
+                  <textarea name="project_description" class="form-control" id="project_description" cols="50" rows="2" placeholder="Project Description"></textarea>
+                </div>
+              </div>
+              <div class="row">
+                <div class="form-group col-md-4 col-lg-4">
+                  <label for="mac_img">Images</label>
+                  <br>
+                  <input type="file" name="mac_img" class="" id="mac_img" accept="/" required multiple  >
+                </div>
+              </div>
+              
+              <div class="submit-btn mt-5" >
+                <input type="submit" value="Add Project" name="submit" class="btn btn-primary">
+              </div>      
+            </form>
+          </div>
+      </div>
+  </div>    
+{% endblock content %}    

@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django import forms
 from django.forms.formsets import formset_factory
 
-from .models import Item, macItem
+from .models import Item, Device
 
 
 class ItemForm(ModelForm):
@@ -19,7 +19,7 @@ class ItemForm(ModelForm):
 
 class MacForm(ModelForm):
     class Meta():
-        model = macItem
+        model = Device
         fields = [
             'mac',
             'img_path'

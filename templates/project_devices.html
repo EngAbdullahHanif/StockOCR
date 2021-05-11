@@ -1,0 +1,38 @@
+
+{% extends 'base.html' %}
+
+{% block title %}
+Project Devices 
+{% endblock title %}
+
+{% block page_title %}
+  {{ project.project_name }}
+{% endblock page_title %}
+
+{% block project_description %}
+  {{ project.description }}
+{% endblock project_description %}
+
+
+{% block content %}
+  <div class="form-row  m-5">
+      <div class="form-group col-md-6 col-lg-6">
+          <h3 style="color: crimson;">{{ msg }}</h3>
+      </div> 
+  </div>
+  <div class="row">
+      {% for device in devices %}
+      <div class="card entry-card col-md-6">
+          <div class="card-header">ID: {{device.pk}} | {{device.created_at}}  <span style="float: right;">{{ device.project.item_type }}</span></div>
+          <div class="card-body">
+              <div class="ocr-image-container">
+              <img src="{{ device.img_path.url}}" alt="OCR Image" class="ocr-image" />
+              </div>
+              <div class="">
+              <h5 style="margin-top: 10px;">{{ device.mac }}</h5>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+  </div>
+{% endblock content %}

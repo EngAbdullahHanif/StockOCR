@@ -1,0 +1,28 @@
+
+
+{% extends 'base.html' %}
+
+{% block title %}
+  Projects List 
+{% endblock title %}
+
+{% block page_title %}
+  Projects List
+{% endblock page_title %}
+
+{% block content %}
+
+{% for project in projects %}
+  <div class="card" style="margin-top: 5px;">
+  <div class="card-body">
+    <h5 class="card-title">{{ project.project_name }}</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{ project.item_type }}</h6>
+    <p class="card-text">{{ project.description }}</p>
+    <a href="{% url 'excel-report' project.pk %}" class="card-link" style="float:right">Export Excel</a>
+    <a href="{% url 'project' project.pk %}" class="card-link">Project Devices</a>
+  </div>
+</div>
+{% endfor %}
+      
+
+{% endblock content %}
