@@ -16,16 +16,17 @@ class ItemType(models.Model):
         verbose_name = 'Device Type'
 
 class Item(models.Model):
-    project_name = models.CharField(max_length=50, blank=True, null=True)
+    # project_name = models.CharField(max_length=50, blank=True, null=True)
+    project_name = models.ForeignKey(Project, on_delete=models.CASCADE,  null=True, blank=True)
     item_type = models.CharField(max_length=50, blank=True, null=True)
-    project_description = models.TextField()
+    project_description = models.TextField(blank=True, null=True)
     name = models.CharField(max_length=40, blank=True, null=True)
     mac_img = models.ImageField(upload_to='images/')
     created_at = models.DateField(auto_now_add=True)
     is_processed = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.project_name
+        return str(self.project_name.project_name)
 
 
 class Device(models.Model):

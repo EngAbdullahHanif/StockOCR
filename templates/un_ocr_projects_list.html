@@ -1,0 +1,25 @@
+
+
+{% extends 'base.html' %}
+
+{% block title %}
+  Projects List 
+{% endblock title %}
+
+{% block page_title %}
+  Generate OCR
+{% endblock page_title %}
+
+{% block content %}
+
+{% for project in projects %}
+  <div class="card" style="margin-top: 5px;">
+  <div class="card-body">
+    <h5 class="card-title" style="display: inline;">{{ project.project_name }}</h5>
+    <a href="{% url 'project-create' project.pk  %}" style="float: right;" class="card-link">Generate OCR</a>
+  </div>
+</div>
+{% endfor %}
+      
+
+{% endblock content %}

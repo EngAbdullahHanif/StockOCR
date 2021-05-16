@@ -19,6 +19,7 @@
     <h6 class="card-subtitle mb-2 text-muted">{{ project.item_type }}</h6>
     <p class="card-text">{{ project.description }}</p>
     <a href="{% url 'excel-report' project.pk %}" class="card-link" style="float:right">Export Excel</a>
+    <a href="{% url 'append-devices' project.pk %}" class="card-link">Append Devices</a>
     <a href="{% url 'project' project.pk %}" class="card-link">Project Devices</a>
   </div>
 </div>

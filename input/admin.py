@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Item, Device, Project, ItemType
+from .models import Item, Device, Project, ItemType, Item
 
 class MacAddressAdmin(admin.ModelAdmin):
 
@@ -17,3 +17,4 @@ class ProjectAdmin(admin.ModelAdmin):
 admin.site.register(Device, MacAddressAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(ItemType)
+admin.site.register(Item)

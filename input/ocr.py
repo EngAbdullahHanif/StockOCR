@@ -210,51 +210,50 @@ def list_mac_address(request):
 
 def form_create(request, project_name, item_type):
     if request.method == 'GET':
-        # min_date = request.GET.get('min_date')
-        # project_name = request.GET.get('project_name')
-        # item_type = request.GET.get('item_type')
-        # project_objs = ItemType.objects.all()
+        min_date = request.GET.get('min_date')
+        project_name = request.GET.get('project_name')
+        item_type = request.GET.get('item_type')
+        project_objs = ItemType.objects.all()
         # print(min_date)
         # print(project)
-        # items = {}
-        # if (min_date is not None) and (project_name is not None):
-        # if (project_name is not None):
-            # print('came here')
-            # project_obj = Project.objects.filter(project_name=project)
+        items = {}
+        if (item_type is not None) and (project_name is not None):
+            print('came here')
+            project_obj = Project.objects.filter(project_name=project)
             # items = Item.objects.filter(project_name=project_name).filter(item_type=item_type).filter(created_at__gte=min_date)
-        # try: 
-            # items = Item.objects.filter(project_name=project_name)
+            try: 
+                items = Item.objects.filter(project_name=project_name)
+                print(items)
+                items = items.filter(item_type=item_type)
+                items = items.filter(created_at__gte=min_date)
+        # items = Item.objects.all()
+        # item_type = item_type
+        # project_name = project_name
+        # print(item_type)
+            if not items:
+                context =  {
+                    'items':items,
+                    'project_name': project_name,
+                    'item_type': item_type,
+                    'project_objs': project_objs,
+                    "msg":"Data Does not exist",
+                }
+                return render(request, 'form.html', context)
             # print(items)
+            generate_ocr(items)
+            # items = Item.objects.filter(project_name=project_name).filter(item_type=item_type).filter(created_at__gte=min_date)
+            # items = Item.objects.filter(project_name=project_name)
             # items = items.filter(item_type=item_type)
             # items = items.filter(created_at__gte=min_date)
-        items = Item.objects.all()
-        item_type = item_type
-        project_name = project_name
-        print(item_type)
-            # if not items:
-            #     context =  {
-            #     'items':items,
-            #     'project_name': project_name,
-            #     'item_type': item_type,
-            #     'project_objs': project_objs,
-            #     "msg":"Data Does not exist",
-            # }
-            #     return render(request, 'form.html', context)
-            # print(items)
-            # ocr(items)
-            # items = Item.objects.filter(project_name=project_name).filter(item_type=item_type).filter(created_at__gte=min_date)
-            # items = Item.objects.filter(project_name=project_name)
-            # items = items.filter(item_type=item_type)
-            # items = items.filter(created_at__gte=min_date)
-        # except Item.DoesNotExist:
-        #     context =  {
-        #         'items':items,
-        #         'project_name': project_name,
-        #         'item_type': item_type,
-        #         'project_objs': project_objs,
-        #         "msg":"Data Does not exist",
-        #     }
-        #     return render(request, 'form.html', context)
+        except Item.DoesNotExist:
+            context =  {
+                'items':items,
+                'project_name': project_name,
+                'item_type': item_type,
+                'project_objs': project_objs,
+                "msg":"Data Does not exist",
+            }
+            return render(request, 'form.html', context)
             # items = Item.objects.all()
         context =  {
             'items':items,
@@ -268,19 +267,21 @@ def form_create(request, project_name, item_type):
         items_value = request.POST.dict().values()
         # print(items)
         project_obj =  {}
+        project_name = ""
         for item in items:
             if re.match('project_name', item):
                 # print(items.get(item))
                 project_obj = Project.objects.filter(project_name=items.get(item))
-                Item.objects.filter(project_name=items.get(item)).delete()
-                print(items.get(item))
+                project_name = project_name=items.get(item)
+                # Item.objects.filter(project_name=items.get(item)).delete()
+                # print(items.get(item))
                 # project_obj = Project(project_name=items.get(item))
                 # project_obj.save()
                 # print(project_obj)
                 continue
             if re.match('item_type', item):
                 project_obj = project_obj.filter(item_type=items.get(item))[0]
-                print(items.get(item))
+                # print(items.get(item))
                 continue
             if re.match('description', item):
                 continue

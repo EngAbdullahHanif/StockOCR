@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}
+  Append Devices
+{% endblock title %}
+
+{% block page_title %}
+  {{project_obj.project_name}}
+{% endblock page_title %}
+
+{% block project_description %}
+  {{ project_obj.description }}
+{% endblock project_description %}
+
+{% block content %}
+  <div class="form-row m-5">
+    <div class="form-group col-md-6 col-lg-6">
+        <h3 style="color: crimson;">{{ msg }}</h3>
+    </div> 
+  </div>
+  <div class="row">
+      <div class="  col-md-12">
+          <div class="card-body">
+            <form method="post" action="" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="row">
+                <div class="form-group col-md-4 col-lg-4">
+                  <label for="mac_img">Images</label>
+                  <br>
+                  <input type="file" name="mac_img" class="" id="mac_img"  required multiple  >
+                </div>
+              </div>
+              
+              <div class="submit-btn mt-5" >
+                <input type="submit" value="Add Project" name="submit" class="btn btn-primary">
+              </div>      
+            </form>
+          </div>
+      </div>
+  </div>    
+{% endblock content %}    

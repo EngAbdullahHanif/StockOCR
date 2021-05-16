@@ -1,0 +1,40 @@
+
+{% extends 'base.html' %}
+{% block title %}
+    OCR
+{% endblock title %}
+
+
+{% block page_title %}
+   Generate OCR for {{ project_obj.project_name }} project
+{% endblock page_title %}
+
+{% block content %}
+    <div class="form-row m-5">
+        <div class="form-group col-md-6 col-lg-6">
+            <h3 style="color: crimson;">{{ msg }}</h3>
+        </div> 
+    </div>
+    <form action="" method="POST" name=''>
+        {% csrf_token %}
+        <input type="hidden" class="form-control" name="{{project_obj.project_name}}" id="project_name" value="{{ project_obj.project_name }}" >
+        <div class="row">
+            {% for item in items %}
+            <div class="card entry-card col-md-6">
+                <div class="card-header">Entry #{{item.pk}} | {{item.created_at}}</div>
+                <div class="card-body">
+                        <div class="ocr-image-container">
+                        <img src="{{ item.mac_img.url}}" alt="OCR Image" class="ocr-image" />
+                        </div>
+                        <div class="">
+                        <textarea name="{{ item.mac_img.name }}" id="" class="ocr-text saved" style="font-size: 30px;">{{ item.name }}</textarea>
+                        </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>   
+        <div class="submit-btn" >
+            <input type="submit" value="submit" name="submit" class="btn btn-primary">
+        </div>
+    </form>
+{% endblock content %}   
