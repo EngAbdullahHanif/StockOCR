@@ -1,10 +1,9 @@
 import io
-from os import pardir
 import re
-import os
 import pytesseract
 import xlsxwriter
 from django.contrib import messages
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import FileResponse
 from django.shortcuts import render, redirect
 from django.template import RequestContext
@@ -13,8 +12,7 @@ from django.views.generic import CreateView
 from django.db import connection
 from pathlib import Path
 
-
-from .forms import ItemForm, AppendForm
+from .forms import ItemForm
 from .models import Item, Device, Project, ItemType
 
 
@@ -279,6 +277,16 @@ def un_ocr_project(request):
 
 def projects_list(request):
     projects = Project.objects.all().order_by('pk').reverse()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(projects, 3)
+
+    try:
+        projects = paginator.page(page)
+    except PageNotAnInteger:
+        projects = paginator.page(1)
+    except EmptyPage:
+        projects = paginator.page(paginator.num_pages)
+
     context = {
         'projects': projects
     }

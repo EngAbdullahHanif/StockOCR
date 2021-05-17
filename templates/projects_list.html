@@ -27,6 +27,29 @@
   </div>
 </div>
 {% endfor %}
-      
+
+{% if projects.has_other_pages %}
+<nav aria-label="Page navigation example" style="margin-top: 40px;" >
+  <ul class="pagination justify-content-center">
+    {% if projects.has_previous %}
+      <li class="page-item"><a class="page-link" href="?page={{ projects.previous_page_number }}">&laquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+    {% endif %}
+    {% for i in projects.paginator.page_range %}
+      {% if projects.number == i %}
+        <li class="page-item active"><span class="page-link">{{ i }} <span class="sr-only page-link">(current)</span></span></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+      {% endif %}
+    {% endfor %}
+    {% if projects.has_next %}
+      <li class="page-item"><a class="page-link" href="?page={{ projects.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}      
 
 {% endblock content %}
