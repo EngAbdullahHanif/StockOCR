@@ -17,7 +17,7 @@
     </div>
     <form action="" method="POST" name=''>
         {% csrf_token %}
-        <input type="hidden" class="form-control" name="{{project_obj.project_name}}" id="project_name" value="{{ project_obj.project_name }}" >
+        <!-- <input type="hidden" class="form-control" name="{{project_obj.project_name}}" id="project_name" value="{{ project_obj.project_name }}" > -->
         <div class="row">
             {% for item in items %}
             <div class="card entry-card col-md-6">

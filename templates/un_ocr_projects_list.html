@@ -16,7 +16,7 @@
   <div class="card" style="margin-top: 5px;">
   <div class="card-body">
     <h5 class="card-title" style="display: inline;">{{ project.project_name }}</h5>
-    <a href="{% url 'project-create' project.pk  %}" style="float: right;" class="card-link">Generate OCR</a>
+    <a href="{% url 'project-create' project.pk  %}" style="float: right;" class="card-link btn btn-outline-info">Generate OCR</a>
   </div>
 </div>
 {% endfor %}

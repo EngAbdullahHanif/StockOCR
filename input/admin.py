@@ -17,4 +17,4 @@ class ProjectAdmin(admin.ModelAdmin):
 admin.site.register(Device, MacAddressAdmin)
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(ItemType)
-admin.site.register(Item)
+# admin.site.register(Item)

@@ -1,6 +1,7 @@
 import io
 from os import pardir
 import re
+import os
 import pytesseract
 import xlsxwriter
 from django.contrib import messages
@@ -10,20 +11,30 @@ from django.template import RequestContext
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
 from django.db import connection
+from pathlib import Path
 
 
 from .forms import ItemForm, AppendForm
 from .models import Item, Device, Project, ItemType
 
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 def generate_ocr(items):
     for item in items:
-        img= 'E:/projects/macOCR'+str(item.mac_img.url)
+        # print(item.mac_img.url)
+        # print(item.mac_img)
+        # print("************************")
+        # path = str(BASE_DIR) + str(item.mac_img.url)
+        # print(path)
+        # print(os.path.join(BASE_DIR, item.mac_img.url))
+        # img= 'E:/projects/macOCR'+str(item.mac_img.url)
+        img= str(BASE_DIR) + str(item.mac_img.url)
+        # img= item.mac_img.url
         image_content = pytesseract.image_to_string(img, lang="eng")
         p4 = re.split('\n', image_content) 
-        print('<<<<<<<<< item type >>>>>>>>>>>')
+        # print('<<<<<<<<< item type >>>>>>>>>>>')
         # print(item_type)   
         for px in p4:
             if (re.search('EQ1|E@1|EQ1|ETH|EQ@1', px)):
@@ -224,9 +235,6 @@ def generate_projects_list_ocr(request, pk):
         items = request.POST.dict()
         # items_value = request.POST.dict().values()
         project_obj = Project.objects.get(pk=pk)
-
-        print(items)
-        print('******************************')
         # items_value = request.POST.dict().values()
         # project_obj =  {}
         # project_name = ""

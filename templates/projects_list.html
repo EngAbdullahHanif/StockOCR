@@ -15,12 +15,15 @@
 {% for project in projects %}
   <div class="card" style="margin-top: 5px;">
   <div class="card-body">
-    <h5 class="card-title">{{ project.project_name }}</h5>
+    <h5 class="card-title">
+      {{ project.project_name }} 
+      <span style="float: right;"><a href="{% url 'append-devices' project.pk %}" class=" btn btn-info btn-sm">Append Devices</a></span>
+    </h5>
+    
     <h6 class="card-subtitle mb-2 text-muted">{{ project.item_type }}</h6>
     <p class="card-text">{{ project.description }}</p>
-    <a href="{% url 'excel-report' project.pk %}" class="card-link" style="float:right">Export Excel</a>
-    <a href="{% url 'append-devices' project.pk %}" class="card-link">Append Devices</a>
-    <a href="{% url 'project' project.pk %}" class="card-link">Project Devices</a>
+    <a href="{% url 'excel-report' project.pk %}" class="card-link btn btn-outline-dark btn-sm" style="float:right">Excel Report</a>
+    <a href="{% url 'project' project.pk %}" class="card-link btn btn-outline-primary btn-sm ">Project Devices</a>
   </div>
 </div>
 {% endfor %}
