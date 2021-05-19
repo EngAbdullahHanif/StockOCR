@@ -9,7 +9,6 @@ from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView
-from django.db import connection
 from pathlib import Path
 
 from .forms import ItemForm
@@ -21,24 +20,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 def generate_ocr(items):
     for item in items:
-        # print(item.mac_img.url)
-        # print(item.mac_img)
-        # print("************************")
-        # path = str(BASE_DIR) + str(item.mac_img.url)
-        # print(path)
-        # print(os.path.join(BASE_DIR, item.mac_img.url))
-        # img= 'E:/projects/macOCR'+str(item.mac_img.url)
         img= str(BASE_DIR) + str(item.mac_img.url)
-        # img= item.mac_img.url
         image_content = pytesseract.image_to_string(img, lang="eng")
         p4 = re.split('\n', image_content) 
-        # print('<<<<<<<<< item type >>>>>>>>>>>')
-        # print(item_type)   
         for px in p4:
-            if (re.search('EQ1|E@1|EQ1|ETH|EQ@1', px)):
-                # re.compile(r'(?:[0-9a-fA-F]:?){12}', image_content)
-                Item.objects.filter(mac_img=item.mac_img.name).update(name=px)
-               
+            # print(px)
+            # if (re.search('EQ1|E@1|EQ1|ETH|EQ@1', px)):
+            if (re.search('WLAN|WO1|E09|£€1@|EQ9', px)):
+                # print(cleaned_name)
+                data = re.findall('WLAN:|WLAN|WO1:|WO1|E09|£€1@|EQ9', px)
+                cleaned_name = px.replace(''.join(data), "").replace("|", "")
+                Item.objects.filter(mac_img=item.mac_img.name).update(name=cleaned_name)
 
 class ItemsCreateView(CreateView):
     model = Item
@@ -59,19 +51,11 @@ class ItemsCreateView(CreateView):
             project_description = request.POST['project_description']
             item_type = request.POST['item_type']
             files = request.FILES.getlist('mac_img')
-            # project_new_obj, created  = Project.objects.get_or_create(project_name=project_name, item_type=item_type)
             project_new_obj  = Project(project_name=project_name, item_type=item_type, description=project_description)
             project_new_obj.save()
-            # if created: 
-            #     project_new_obj.description=project_description
-            #     project_new_obj.save()
-            # print(created)
             for my_file in files:
                 p = Item(mac_img=my_file, project_name=project_new_obj)
                 p.save()
-            # items = Item.objects.all()
-            # generate_ocr(items, item_type)
-            # return redirect(reverse('device-create', kwargs={"project_name": project_name, "item_type":item_type}))
             messages.success(self.request, 'Successfully Saved')
             return redirect(reverse('home'))
         return redirect('home')
@@ -99,47 +83,6 @@ def list_devices(request):
             'project_objs': project_objs,
         }
         return render(request, 'devices.html', context)
-
-
-
-# def create_device(request, project_name, item_type):
-#     if request.method == 'GET':
-#         items = Item.objects.all()
-#         item_type = item_type
-#         project_name = project_name
-#         print(item_type)
-#         context =  {
-#             'items':items,
-#             'project_name': project_name,
-#             'item_type': item_type,
-#         }
-#         return render(request, 'device_create.html', context)
-#     if request.method == "POST":
-#         items = request.POST.dict()
-#         items_value = request.POST.dict().values()
-#         project_obj =  {}
-#         for item in items:
-#             if re.match('project_name', item):
-#                 project_obj = Project.objects.filter(project_name=items.get(item))
-#                 Item.objects.filter(project_name=items.get(item)).delete()
-#                 print(items.get(item))
-#                 continue
-#             if re.match('item_type', item):
-#                 project_obj = project_obj.filter(item_type=items.get(item))[0]
-#                 print(items.get(item))
-#                 continue
-#             if re.match('description', item):
-#                 continue
-#             if re.match('csrfmiddlewaretoken', item):
-#                 continue
-#             if re.match('submit', item):
-#                 continue
-#             form = Device(mac=items.get(item), img_path=item, project=project_obj)        
-#             form.save()
-        
-
-#         return redirect('projects')
-
 
 
 def create_device(request):
@@ -188,17 +131,10 @@ def create_device(request):
         items_value = request.POST.dict().values()
         project_obj =  {}
         project_name = ""
-        # item_type = ""
         for item in items:
             if re.match('project_name', item):
-                # project_obj = Project.objects.filter(project_name=items.get(item))
                 project_obj = Project.objects.get(pk=pk)
-                # project_name = items.get(item)
                 continue
-            # if re.match('item_type', item):
-            #     project_obj = project_obj.filter(item_type=items.get(item)).last()
-            #     item_type = items.get(item)
-            #     continue
             if re.match('description', item):
                 continue
             if re.match('csrfmiddlewaretoken', item):
@@ -218,43 +154,29 @@ def generate_projects_list_ocr(request, pk):
     project_obj = Project.objects.get(pk=pk)
     if request.method == 'GET':
         items = Item.objects.filter(project_name=project_obj, is_processed=False)
-        # items = Item.objects.filter(project_name=project_obj, is_processed=False).delete()
         generate_ocr(items)
         items = Item.objects.filter(project_name=project_obj, is_processed=False)
-        # items = Item.objects.filter(project_name__icontains=project_name)
-
         context =  {
             'items':items,
-            # 'project_name': project_name,
             'project_obj': project_obj
         }
         return render(request, 'generate_project_ocr.html', context)  
     if request.method == "POST":
         items = request.POST.dict()
-        # items_value = request.POST.dict().values()
         project_obj = Project.objects.get(pk=pk)
-        # items_value = request.POST.dict().values()
-        # project_obj =  {}
-        # project_name = ""
-        # item_type = ""
         for item in items:
-            # if re.match('project_name', item):
-            #     # project_obj = Project.objects.filter(project_name=items.get(item))
-            #     project_obj = Project.objects.get(pk=pk)
-            #     # project_name = items.get(item)
-            #     continue
-            # if re.match('item_type', item):
-            #     project_obj = project_obj.filter(item_type=items.get(item)).last()
-            #     item_type = items.get(item)
-            #     continue
-            # if re.match('description', item):
-            #     continue
             if re.match('csrfmiddlewaretoken', item):
                 continue
             if re.match('submit', item):
                 continue
-
-            form = Device(mac=items.get(item), img_path=item, project=project_obj)        
+            # cleaned_data = re.findall(re.compile(r'(?:[0-9a-fA-F]:?){12}'), items.get(item))
+            # p = re.compile(r'((?<=\s).*)')
+            # data = re.findall(p, items.get(item))
+            data = items.get(item).replace(" ", "")
+            p = re.compile(r'(?:[0-9a-fA-F]:?){12}')
+            row_mac = re.findall(p,  data)
+            mac = ''.join(row_mac)
+            form = Device(mac=mac, img_path=item, project=project_obj)        
             form.save()
             Item.objects.filter(project_name=project_obj).update(is_processed=True)
     messages.success(request, 'OCR Generated Successfully')
@@ -262,7 +184,6 @@ def generate_projects_list_ocr(request, pk):
 
 
 def un_ocr_project(request):
-    cursor = connection.cursor()
     objects = Item.objects.filter(is_processed=False).values('project_name').distinct()
    
     projects = []
@@ -278,7 +199,7 @@ def un_ocr_project(request):
 def projects_list(request):
     projects = Project.objects.all().order_by('pk').reverse()
     page = request.GET.get('page', 1)
-    paginator = Paginator(projects, 3)
+    paginator = Paginator(projects, 10)
 
     try:
         projects = paginator.page(page)

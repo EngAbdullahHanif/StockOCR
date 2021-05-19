@@ -377,3 +377,44 @@ def excelreport(request, pk):
     buffer.seek(0)
 
     return FileResponse(buffer, as_attachment=True, filename=project_obj.project_name+'.xlsx')
+
+
+    
+# def create_device(request, project_name, item_type):
+#     if request.method == 'GET':
+#         items = Item.objects.all()
+#         item_type = item_type
+#         project_name = project_name
+#         print(item_type)
+#         context =  {
+#             'items':items,
+#             'project_name': project_name,
+#             'item_type': item_type,
+#         }
+#         return render(request, 'device_create.html', context)
+#     if request.method == "POST":
+#         items = request.POST.dict()
+#         items_value = request.POST.dict().values()
+#         project_obj =  {}
+#         for item in items:
+#             if re.match('project_name', item):
+#                 project_obj = Project.objects.filter(project_name=items.get(item))
+#                 Item.objects.filter(project_name=items.get(item)).delete()
+#                 print(items.get(item))
+#                 continue
+#             if re.match('item_type', item):
+#                 project_obj = project_obj.filter(item_type=items.get(item))[0]
+#                 print(items.get(item))
+#                 continue
+#             if re.match('description', item):
+#                 continue
+#             if re.match('csrfmiddlewaretoken', item):
+#                 continue
+#             if re.match('submit', item):
+#                 continue
+#             form = Device(mac=items.get(item), img_path=item, project=project_obj)        
+#             form.save()
+        
+
+#         return redirect('projects')
+
